@@ -9,7 +9,7 @@ export class Vote {
     vote_id: number
 
 
-    @Column()
+    @Column({default: 1})
     decision: number
 
     @ManyToOne(() => User)

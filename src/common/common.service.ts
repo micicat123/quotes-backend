@@ -1,4 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export class CommonService {}
+export abstract class CommonService {
+
+    protected constructor(
+        protected readonly repository: Repository<any>
+    ){} 
+
+    async create(data:any): Promise<any> {
+        return this.repository.save(data);
+    }
+
+    async findBy(data: any): Promise<any>{
+        return this.repository.findOneBy({data});
+    }
+}

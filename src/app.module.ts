@@ -7,6 +7,7 @@ import { QuoteModule } from './quote/quote.module';
 import { VoteModule } from './vote/vote.module';
 import { CommonModule } from './common/common.module';
 import { config } from 'dotenv';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -17,7 +18,8 @@ import { config } from 'dotenv';
             UserModule,
             QuoteModule,
             VoteModule,
-            CommonModule
+            CommonModule,
+            AuthModule
            ],
   controllers: [],
   providers: [],
