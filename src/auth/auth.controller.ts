@@ -1,14 +1,16 @@
-import { BadRequestException, Body, Controller, NotFoundException, Post, Res} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Put, Req, Res} from '@nestjs/common';
 import { Response, Request } from 'express';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { AuthService } from './auth.service';
 const bcrypt = require('bcryptjs');
 
 @Controller('auth')
 export class AuthController {
     constructor(
         private readonly jwtService: JwtService,
-        private readonly userService: UserService
+        private readonly userService: UserService,
+        private readonly authService: AuthService
     ){}
 
     @Post('login')
