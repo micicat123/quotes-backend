@@ -19,15 +19,15 @@ export class AuthController {
         @Body('password') password: string,
         @Res({passthrough: true}) response : Response
     ){
-        const found = await this.userService.findBy(email);
+        const found = await this.userService.findBy({email});
         if (!found) throw new NotFoundException("User not found");
         if (!await bcrypt.compare(password, (await found).password)) throw new BadRequestException("Invalid credentials.");
 
-        const jwt = await this.jwtService.signAsync({user_id: (await found).user_id});
+        const jwt = await this.jwtService.sign({user_id: (await found).user_id}, {expiresIn: '5d', secret:'123'});
 
         response.cookie('jwt', jwt, {httpOnly: true});
 
-        return found;
+        return jwt;
     }
 
     @Post('logout')

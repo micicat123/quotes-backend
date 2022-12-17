@@ -3,12 +3,12 @@ import { IsNotEmpty, IsEmail } from 'class-validator';
 export class UserUpdateInfoDto{
 
     @IsNotEmpty()
-    first_name: string;
+    first_name ?: string;
     
     @IsNotEmpty()
-    last_name: string;
+    last_name ?: string;
     
-    @IsNotEmpty()
+    @IsNotEmpty()s
     @IsEmail()
-    email: string;
+    email ?: string;
 }

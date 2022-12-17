@@ -13,6 +13,7 @@ export abstract class CommonService {
     }
 
     async findBy(data: any): Promise<any>{
-        return this.repository.findOneBy({data});
+        console.log(data);
+        return this.repository.findOneBy(data);
     }
 }

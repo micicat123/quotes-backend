@@ -34,11 +34,6 @@ export class UserController {
         }); 
     }
 
-    @Get(':id')
-    async getUserInfo(@Param('id') id: number){
-        return this.userService.findBy(id);
-    }
-
     @Put('update-password')
     async updatePassword(   
         @Body() body: UserUpdatePasswordDto,
@@ -67,4 +62,15 @@ export class UserController {
         return this.userService.findBy(id);
     }
 
+    @Get('/quotes')
+    async getUserQuotes(@Req() request: Request): Promise<User>{
+        const id = await this.authService.userId(request);
+        return this.userService.getUsersQuotes(id); 
+    }
+
+    @Get('/likedQuotes')
+    async getUserLikedQuotes(@Req() request: Request): Promise<User>{
+        const id = await this.authService.userId(request);
+        return this.userService.getQuotesLikedByUser(id); 
+    }
 }

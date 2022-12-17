@@ -24,9 +24,8 @@ export class UserService extends CommonService {
     }
 
     async update(id:number, data:any): Promise<any> {
-        console.log(data);
         return this.repository.update(id, data);
-    }
+    } 
 
 
 }
