@@ -62,15 +62,13 @@ export class UserController {
         return this.userService.findBy(id);
     }
 
-    @Get('/quotes')
-    async getUserQuotes(@Req() request: Request): Promise<User>{
-        const id = await this.authService.userId(request);
+    @Get('/quotes/:id')
+    async getUserQuotes(@Param('id') id: number): Promise<User>{
         return this.userService.getUsersQuotes(id); 
     }
 
-    @Get('/likedQuotes')
-    async getUserLikedQuotes(@Req() request: Request): Promise<User>{
-        const id = await this.authService.userId(request);
+    @Get('/likedQuotes/:id')
+    async getUserLikedQuotes(@Param('id') id: number): Promise<User>{
         return this.userService.getQuotesLikedByUser(id); 
     }
 }
