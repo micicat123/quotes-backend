@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CommonService } from 'src/common/common.service';
 
 @Injectable()
-export class QuoteService {}
+export class QuoteService extends CommonService{}

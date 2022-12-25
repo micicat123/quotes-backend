@@ -23,9 +23,4 @@ export class UserService extends CommonService {
         return this.userRepository.query(`SELECT * FROM "Quotes" q INNER JOIN "Votes" v USING(quote_id) WHERE v.user_id = ${id} AND decision=2;`);
     }
 
-    async update(id:number, data:any): Promise<any> {
-        return this.repository.update(id, data);
-    } 
-
-
 }
