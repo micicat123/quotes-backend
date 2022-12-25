@@ -10,16 +10,16 @@ export class Quote {
     @Column()
     quote: string
 
-    @Column()
+    @Column({default:0})
     upvotes: number
 
-    @Column()
+    @Column({default:0})
     downvotes: number
 
-    @Column()
+    @Column({default:0})
     score: number
 
-    @Column({ type: 'timestamptz' })
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     created_at: Date;
 
     @ManyToOne(() => User)

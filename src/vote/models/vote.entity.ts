@@ -5,6 +5,8 @@ import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne } from "t
 @Entity('Votes')
 export class Vote {
 
+    //upvotes, downvotes, score, decision
+    //use .save to create new entry or update existing one 
     @PrimaryGeneratedColumn()
     vote_id: number
 

@@ -37,10 +37,10 @@ export class QuoteController {
     @Put(':id')
     async update(
         @Param('id') id: number, 
-        @Body() body: QuoteUpdateDto        )
+        @Body() body: QuoteUpdateDto)
     {
         await this.quoteService.update(id,body);
-        return this.quoteService.findBy({id});
+        return this.quoteService.findBy({quote_id: id});
     }
 
     @Delete(':id')
