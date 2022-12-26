@@ -1,5 +1,6 @@
-import { BadRequestException, Body, Controller, Get, Post, Param, Put, NotFoundException, Req } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Param, Put, NotFoundException, Req, UseGuards } from '@nestjs/common';
 import { Response, Request } from 'express';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { AuthService } from 'src/auth/auth.service';
 import { UserCreateDto } from './models/user-create.dto';
 import { UserUpdateInfoDto } from './models/user-update-info.dto';
@@ -8,6 +9,7 @@ import { User } from './models/user.entity';
 import { UserService } from './user.service';
 const bcrypt = require('bcryptjs');
 
+@UseGuards(AuthGuard)
 @Controller('user')
 export class UserController {
     

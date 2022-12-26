@@ -1,8 +1,9 @@
-import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Put, Req, Res} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Put, Req, Res, UseGuards} from '@nestjs/common';
 import { Response, Request } from 'express';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
+import { AuthGuard } from './auth.guard';
 const bcrypt = require('bcryptjs');
 
 @Controller('auth')
@@ -30,6 +31,7 @@ export class AuthController {
         return jwt;
     }
 
+    @UseGuards(AuthGuard)
     @Post('logout')
     async logout(@Res({passthrough: true}) response : Response){
         response.clearCookie('jwt');

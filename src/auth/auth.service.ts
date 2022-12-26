@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { AuthGuard } from './auth.guard';
 
+@UseGuards(AuthGuard)
 @Injectable()
 export class AuthService {
     
