@@ -10,7 +10,6 @@ export class Vote {
     @PrimaryGeneratedColumn()
     vote_id: number
 
-
     @Column({default: 1})
     decision: number
 
