@@ -19,8 +19,5 @@ export class User {
     password: string
 
     @Column()
-    karma: number
-
-    @Column()
     picture: string
 }
