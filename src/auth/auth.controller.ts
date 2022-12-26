@@ -24,7 +24,7 @@ export class AuthController {
         if (!found) throw new NotFoundException("User not found");
         if (!await bcrypt.compare(password, (await found).password)) throw new BadRequestException("Invalid credentials.");
 
-        const jwt = await this.jwtService.sign({user_id: (await found).user_id}, {expiresIn: '5d', secret:'123'});
+        const jwt = await this.jwtService.sign({user_id: (await found).user_id}, {expiresIn: '5d', secret: process.env.JWT_SECRET});
 
         response.cookie('jwt', jwt, {httpOnly: true});
 

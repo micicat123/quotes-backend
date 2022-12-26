@@ -10,7 +10,7 @@ require('dotenv').config();
   imports: [  
     forwardRef(() => UserModule),
     CommonModule,
-    JwtModule.register({ secret: '123'})
+    JwtModule.register({ secret: process.env.JWT_SECRET})
   ],
   controllers: [AuthController],
   providers: [AuthService],

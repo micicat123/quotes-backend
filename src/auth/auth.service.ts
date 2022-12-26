@@ -13,7 +13,7 @@ export class AuthService {
     async userId(request : Request): Promise<number>{
         const cookie = request.cookies['jwt'];
 
-        const data = await this.jwtService.verify(cookie, {secret: "123"});
+        const data = await this.jwtService.verify(cookie, {secret: process.env.JWT_SECRET});
         console.log(data);
 
         return data['user_id'];
