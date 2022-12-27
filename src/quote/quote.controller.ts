@@ -17,7 +17,7 @@ export class QuoteController {
 
     @Get()
     async all(){
-        return this.quoteService.all();
+        return this.quoteService.paginate();
     }
 
     @UseGuards(AuthGuard)
