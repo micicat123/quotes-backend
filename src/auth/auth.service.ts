@@ -2,6 +2,7 @@ import { Injectable, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { AuthGuard } from './auth.guard';
+require('dotenv').config();
 
 @UseGuards(AuthGuard)
 @Injectable()

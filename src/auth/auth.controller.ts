@@ -5,13 +5,13 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 const bcrypt = require('bcryptjs');
+require('dotenv').config();
 
 @Controller('auth')
 export class AuthController {
     constructor(
         private readonly jwtService: JwtService,
-        private readonly userService: UserService,
-        private readonly authService: AuthService
+        private readonly userService: UserService
     ){}
 
     @Post('login')
@@ -20,7 +20,7 @@ export class AuthController {
         @Body('password') password: string,
         @Res({passthrough: true}) response : Response
     ){
-        const found = await this.userService.findBy({email});
+        const found = await this.userService.findBy({email: email});
         if (!found) throw new NotFoundException("User not found");
         if (!await bcrypt.compare(password, (await found).password)) throw new BadRequestException("Invalid credentials.");
 
