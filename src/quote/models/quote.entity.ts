@@ -5,19 +5,19 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "t
 export class Quote {
 
     @PrimaryGeneratedColumn()
-    quote_id: number
+    quote_id: number;
 
     @Column()
-    quote: string
+    quote: string;
 
     @Column({default:0})
-    upvotes: number
+    upvotes: number;
 
     @Column({default:0})
-    downvotes: number
+    downvotes: number;
 
     @Column({default:0})
-    score: number
+    score: number;
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     created_at: Date;
