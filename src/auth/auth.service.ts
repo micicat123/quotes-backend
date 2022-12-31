@@ -15,7 +15,6 @@ export class AuthService {
         const cookie = request.cookies['jwt'];
 
         const data = await this.jwtService.verify(cookie, {secret: process.env.JWT_SECRET});
-        console.log(data);
 
         return data['user_id'];
     }

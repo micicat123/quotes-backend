@@ -11,7 +11,8 @@ require('dotenv').config();
 export class AuthController {
     constructor(
         private readonly jwtService: JwtService,
-        private readonly userService: UserService
+        private readonly userService: UserService,
+        private readonly authService: AuthService,
     ){}
 
     @Post('login')
@@ -37,4 +38,12 @@ export class AuthController {
         response.clearCookie('jwt');
         return console.log("logged out");
     }
-}
+
+    @UseGuards(AuthGuard)
+    @Get('user')
+    async getUser(@Req() request : Request){
+        const user_id = await this.authService.userId(request);
+        return this.userService.findBy(user_id);
+    }
+
+} 
