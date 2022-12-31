@@ -9,7 +9,6 @@ import { User } from './models/user.entity';
 import { UserService } from './user.service';
 const bcrypt = require('bcryptjs');
 
-@UseGuards(AuthGuard)
 @Controller('user')
 export class UserController {
     
@@ -36,6 +35,7 @@ export class UserController {
         }); 
     }
 
+    @UseGuards(AuthGuard)
     @Put('update-password')
     async updatePassword(   
         @Body() body: UserUpdatePasswordDto,
@@ -54,6 +54,7 @@ export class UserController {
         return this.userService.findBy(id);
     }
 
+    @UseGuards(AuthGuard)
     @Put('update-info')
     async updateInfo(   
         @Body() body: UserUpdateInfoDto,
@@ -64,11 +65,13 @@ export class UserController {
         return this.userService.findBy(id);
     }
 
+    @UseGuards(AuthGuard)
     @Get('/quotes/:id')
     async getUserQuotes(@Param('id') id: number): Promise<User>{
         return this.userService.getUsersQuotes(id); 
     }
 
+    @UseGuards(AuthGuard)
     @Get('/likedQuotes/:id')
     async getUserLikedQuotes(@Param('id') id: number): Promise<User>{
         return this.userService.getQuotesLikedByUser(id); 
