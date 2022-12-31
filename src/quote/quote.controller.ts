@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { QuoteCreateDto } from './models/quote-create.dto';
 import { Quote } from './models/quote.entity';
@@ -15,9 +15,9 @@ export class QuoteController {
         private authService: AuthService
     ){ }
 
-    @Get()
-    async all(){
-        return this.quoteService.paginate();
+    @Get(':page')
+    async all(@Param('page') page: number){
+        return this.quoteService.paginate(page);
     }
 
     @UseGuards(AuthGuard)

@@ -13,6 +13,7 @@ export class AuthGuard implements CanActivate {
       return this.jwtService.verify(jwt);
     }
     catch(err){
+      console.log('Failed to pass auth guard');
       return false;
     }
   }
