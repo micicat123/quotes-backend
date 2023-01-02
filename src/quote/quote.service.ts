@@ -13,19 +13,13 @@ export class QuoteService extends CommonService{
     }
 
     async paginate(page:number): Promise<any>{
-        const take = 3;
+        const take = 9;
         const[data, total] = await this.repository.findAndCount({
             take,
-            skip: take * (page - 1)
+            skip: take * (page - 1),
+            relations: ['user']
         });
-        return {
-            data: data,
-            meta: {
-                total,
-                page,
-                last_page: Math.ceil(total / take)
-            }
-        }
+        return data;
         
     }
 }
