@@ -21,6 +21,12 @@ export class QuoteController {
     }
 
     @UseGuards(AuthGuard)
+    @Get('random')
+    async random(@Param('page') page: number){
+        return this.quoteService.randomQuote();
+    }
+
+    @UseGuards(AuthGuard)
     @Post()
     async create(
         @Body() body: QuoteCreateDto,
