@@ -1,5 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+require('dotenv').config();
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -10,7 +11,7 @@ export class AuthGuard implements CanActivate {
     try{
       const request = context.switchToHttp().getRequest();
       const jwt = request.cookies['jwt'];
-      return this.jwtService.verify(jwt);
+      return this.jwtService.verifyAsync(jwt, {secret: process.env.JWT_SECRET})
     }
     catch(err){
       console.log('Failed to pass auth guard');

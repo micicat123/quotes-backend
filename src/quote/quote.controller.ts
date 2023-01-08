@@ -15,14 +15,14 @@ export class QuoteController {
         private authService: AuthService
     ){ }
 
-    @Get(':page')
+    @Get('/paginated/:page')
     async all(@Param('page') page: number){
         return this.quoteService.paginate(page);
     }
 
     @UseGuards(AuthGuard)
     @Get('random')
-    async random(@Param('page') page: number){
+    async random(){
         return this.quoteService.randomQuote();
     }
 
