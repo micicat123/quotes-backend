@@ -13,16 +13,12 @@ export abstract class CommonService {
     }
 
     async findBy(data: any): Promise<any>{
-        return this.repository.findOneBy(data);
+        return this.repository.findOne({where: data});
     }
 
     async all(): Promise<any>{
         return this.repository.find();
     }
-
-    async update(id:number, data:any): Promise<any> {
-        return this.repository.update(id, data);
-    } 
 
     async delete(id: number): Promise<any> {
         return this.repository.delete(id);

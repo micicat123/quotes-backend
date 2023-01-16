@@ -1,5 +1,6 @@
 import { User } from "src/user/models/user.entity"
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm"
+import { Vote } from "src/vote/models/vote.entity";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm"
 
 @Entity('Quotes')
 export class Quote {
@@ -24,5 +25,5 @@ export class Quote {
 
     @ManyToOne(() => User)
     @JoinColumn({name: 'user_id'})
-    user: User
+    user: User;
 }

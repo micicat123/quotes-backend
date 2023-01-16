@@ -48,8 +48,10 @@ export class QuoteController {
         @Param('id') id: number, 
         @Body() body: QuoteUpdateDto)
     {
-        await this.quoteService.update(id,body);
-        return this.quoteService.findBy({quote_id: id});
+        return await this.quoteService.create({
+            quote_id: id,
+            quote: body.quote
+        });
     }
 
     @UseGuards(AuthGuard)

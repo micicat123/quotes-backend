@@ -30,7 +30,7 @@ export class UserController {
             last_name,
             email,
             karma: 0,
-            picture: '',
+            picture: '', 
             password: hashed_password
         }); 
     }
@@ -48,32 +48,54 @@ export class UserController {
 
         const hashed = await bcrypt.hash(body.password.toString(), 12);
 
-        await this.userService.update(id,{ 
+        await this.userService.create({
+            user_id: id, 
             password: hashed
          });
         return this.userService.findBy(id);
     }
 
-    @UseGuards(AuthGuard)
     @Put('update-info')
     async updateInfo(   
         @Body() body: UserUpdateInfoDto,
         @Req() request: Request
     ){
         const id = await this.authService.userId(request);
-        await this.userService.update(id, body);
-        return this.userService.findBy(id);
+        return await this.userService.create({
+            user_id: id,
+            email: body.email,
+            first_name: body.first_name,
+            last_name: body.last_name
+        });
     }
 
     @UseGuards(AuthGuard)
-    @Get('/quotes/:id')
-    async getUserQuotes(@Param('id') id: number): Promise<User>{
-        return this.userService.getUsersQuotes(id); 
+    @Get('/quotes/:page')
+    async getUserQuotes(
+        @Param('page') page: number,
+        @Req() request: Request
+    ): Promise<User>{
+        const user_id = await this.authService.userId(request);
+        return this.userService.getUsersQuotes(user_id, page); 
     }
 
     @UseGuards(AuthGuard)
-    @Get('/likedQuotes/:id')
-    async getUserLikedQuotes(@Param('id') id: number): Promise<User>{
-        return this.userService.getQuotesLikedByUser(id); 
+    @Get('/quotes-liked/:page')
+    async getUserLikedQuotes(
+        @Param('page') page: number,
+        @Req() request: Request
+    ): Promise<User>{
+        const user_id = await this.authService.userId(request);
+        return this.userService.getQuotesLikedByUser(user_id, page); 
+    }
+
+    @UseGuards(AuthGuard)
+    @Get('/most-liked-quotes/:page')
+    async getUsersMostLikedQuotes(
+        @Param('page') page: number,
+        @Req() request: Request
+    ): Promise<User>{
+        const user_id = await this.authService.userId(request);
+        return this.userService.getUsersMostLikedQuotes(user_id, page); 
     }
 }

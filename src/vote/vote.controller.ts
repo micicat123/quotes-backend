@@ -15,6 +15,13 @@ export class VoteController {
         private authService: AuthService
     ){ }
 
+    async updateQuoteToNeutral(vote){
+        await this.voteService.create({
+            vote_id: vote.vote_id, 
+            decision: 1
+        });
+    }  
+
     //count all votes with user id that decision is not 1 to get karma for user
     @Get()
     async all(){
@@ -36,44 +43,49 @@ export class VoteController {
 
             //user upvoted a quote before
             if (vote.user_id == user_id && vote.quote_id == quote_id && vote.decision == 2) {
-                await this.quoteService.update(quote_id, {
+                this.updateQuoteToNeutral(vote);
+                return await this.quoteService.create({
+                    quote_id,
                     upvotes: quote.upvotes - 1,
                     score: (quote.upvotes - 1) - quote.downvotes
                 });
-                await this.voteService.update(vote.vote_id, {decision: 1});
-
-                return this.quoteService.findBy({quote_id: quote_id});
             }
 
             //user downvoted a quote before
             else if (vote.user_id == user_id && vote.quote_id == quote_id && vote.decision == 0) {
-                await this.quoteService.update(quote_id, {
+                await this.voteService.create({
+                    vote_id: vote.vote_id, 
+                    decision: 2
+                });
+
+                return await this.quoteService.create({
+                    quote_id,
                     upvotes: quote.upvotes + 1,
                     downvotes: quote.downvotes - 1,
                     score: (quote.upvotes + 1) - (quote.downvotes - 1)
                 });
-                await this.voteService.update(vote.vote_id, {decision: 2});
-
-                return this.quoteService.findBy({quote_id: quote_id});
             }
 
             //user didnt didnt downvote quote but has interacted with it
             else if (vote.user_id == user_id && vote.quote_id == quote_id && vote.decision == 1){
-                await this.quoteService.update(quote_id, {
+                await this.voteService.create({
+                    vote_id: vote.vote_id,
+                    decision: 2
+                });
+
+                return await this.quoteService.create({
+                    quote_id,
                     upvotes: quote.upvotes + 1,
                     score: (quote.upvotes + 1) - (quote.downvotes)
                 });
-                await this.voteService.update(vote.vote_id, {decision: 2});
-
-                return this.quoteService.findBy({quote_id: quote_id});
             }
         }
 
         //user hasnt interacted with quote yet
-        await this.quoteService.update(quote_id, {
+        await this.quoteService.create({
+            quote_id,
             upvotes: quote.upvotes + 1,
             score: (quote.upvotes + 1) - quote.downvotes
-
         });
         return this.voteService.create({
             decision: 2,
@@ -97,41 +109,48 @@ export class VoteController {
 
             //user downvotes a quote before
             if (vote.user_id == user_id && vote.quote_id == quote_id && vote.decision == 0) {
-                await this.quoteService.update(quote_id, {
+                this.updateQuoteToNeutral(vote);
+
+                return await this.quoteService.create({
+                    quote_id,
                     downvotes: quote.downvotes - 1,
                     score: quote.upvotes - (quote.downvotes - 1)
                 });
-                await this.voteService.update(vote.vote_id, {decision: 1});
-
-                return this.quoteService.findBy({quote_id: quote_id});
             }
 
             //user upvoted a quote before
             if (vote.user_id == user_id && vote.quote_id == quote_id && vote.decision == 2) {
-                await this.quoteService.update(quote_id, {
+                await this.voteService.create({
+                    vote_id: vote.vote_id,    
+                    decision: 0
+                });
+
+                return await this.quoteService.create({
+                    quote_id,
                     upvotes: quote.upvotes - 1,
                     downvotes: quote.downvotes + 1,
                     score: (quote.upvotes - 1) - (quote.downvotes + 1)
                 });
-                await this.voteService.update(vote.vote_id, {decision: 0});
-
-                return this.quoteService.findBy({quote_id: quote_id});
             }
 
             //user didnt didnt upvote quote but has interacted with it
             else if (vote.user_id == user_id && vote.quote_id == quote_id && vote.decision == 1){
-                await this.quoteService.update(quote_id, {
+                await this.voteService.create({
+                    vote_id: vote.vote_id,
+                    decision: 0
+                });
+
+                return await this.quoteService.create({
+                    quote_id,
                     upvotes: quote.downvotes + 1,
                     score: (quote.upvotes) - (quote.downvotes + 1)
                 });
-                await this.voteService.update(vote.vote_id, {decision: 0});
-
-                return this.quoteService.findBy({quote_id: quote_id});
             }
         }
 
         //user hasnt interacted with quote yet
-        await this.quoteService.update(quote_id, {
+        await this.quoteService.create({
+            quote_id,
             downvotes: quote.downvotes + 1,
             score: quote.upvotes - (quote.downvotes + 1)
         });
