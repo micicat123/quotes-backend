@@ -42,8 +42,8 @@ export class UserController {
         @Req() request: Request
     ){
         const id = await this.authService.userId(request);
-
-        if (!id) throw new NotFoundException("Current password is not correct");
+        const found = await this.userService.findBy({user_id: id});
+        if (!await bcrypt.compare(body.old_password, (await found).password)) throw new BadRequestException("Current pasword is not correct.");
         if (body.password !== body.password_confirm) throw new BadRequestException("Passwords do not match!");
 
         const hashed = await bcrypt.hash(body.password.toString(), 12);

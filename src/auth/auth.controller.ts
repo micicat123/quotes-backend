@@ -44,6 +44,6 @@ export class AuthController {
     async getUser(@Req() request : Request){
         const user_id = await this.authService.userId(request);
         return this.userService.findBy({user_id: user_id});
-    }
+    } 
 
 } 
