@@ -5,7 +5,4 @@ export class QuoteCreateDto{
 
     @IsNotEmpty()
     quote: string;
-    
-    @IsNotEmpty()
-    user: User;
 }

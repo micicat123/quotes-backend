@@ -16,6 +16,12 @@ export class UserService extends CommonService {
         super(userRepository);
     }
 
+    async getUserStatistics(id:number):Promise<any>{
+        const quotes = await this.quoteRepository.query(`SELECT COUNT(quote_id) FROM "Quotes" WHERE user_id=${id}`);
+        const karma = await this.quoteRepository.query(`SELECT COUNT(quote) FROM "Quotes" q INNER JOIN "Votes" v USING(quote_id) WHERE v.user_id=${id} AND decision != 1`);
+        return [quotes, karma];
+    }
+
     async getUsersMostLikedQuotes(id:number, page:number):Promise<any>{
         const take = 4;
         const [data, total] =  await this.quoteRepository.findAndCount({

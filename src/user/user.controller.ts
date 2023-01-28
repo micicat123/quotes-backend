@@ -55,6 +55,7 @@ export class UserController {
         return this.userService.findBy(id);
     }
 
+    @UseGuards(AuthGuard)
     @Put('update-info')
     async updateInfo(   
         @Body() body: UserUpdateInfoDto,
@@ -67,6 +68,14 @@ export class UserController {
             first_name: body.first_name,
             last_name: body.last_name
         });
+    }
+
+    @UseGuards(AuthGuard)
+    @Get('/statistics')
+    async getUserStatistics( @Req() request: Request): Promise<User>{
+
+        const user_id = await this.authService.userId(request);
+        return this.userService.getUserStatistics(user_id); 
     }
 
     @UseGuards(AuthGuard)

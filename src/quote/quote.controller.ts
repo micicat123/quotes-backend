@@ -15,9 +15,15 @@ export class QuoteController {
         private authService: AuthService
     ){ }
 
-    @Get('/paginated/:page')
-    async all(@Param('page') page: number){
-        return this.quoteService.paginate(page);
+    @Get('/most-upvoted/:page')
+    async upvotedQuotes(@Param('page') page: number){
+        return this.quoteService.paginateUpvoted(page);
+    }
+
+    @UseGuards(AuthGuard)
+    @Get('/most-recent/:page')
+    async recentQuotes(@Param('page') page: number){
+        return this.quoteService.paginateRecent(page);
     }
 
     @UseGuards(AuthGuard)

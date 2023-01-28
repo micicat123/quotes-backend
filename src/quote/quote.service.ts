@@ -14,9 +14,25 @@ export class QuoteService extends CommonService{
         super(quoteRepository);
     }
 
-    async paginate(page:number): Promise<any>{
+    async paginateRecent(page:number): Promise<any>{
         const take = 9;
         const[data, total] = await this.repository.findAndCount({
+            order: {
+                created_at: "DESC"
+            },
+            take,
+            skip: take * (page - 1),
+            relations: ['user']
+        });
+        return data;
+    }
+
+    async paginateUpvoted(page:number): Promise<any>{
+        const take = 9;
+        const[data, total] = await this.repository.findAndCount({
+            order: {
+                upvotes: "DESC"
+            },
             take,
             skip: take * (page - 1),
             relations: ['user']
