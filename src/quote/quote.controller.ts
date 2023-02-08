@@ -6,6 +6,7 @@ import { QuoteService } from './quote.service';
 import { Request } from 'express';
 import { QuoteUpdateDto } from './models/quote-update.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { type } from 'os';
 
 @Controller('quote')
 export class QuoteController {
@@ -32,6 +33,14 @@ export class QuoteController {
         return this.quoteService.randomQuote();
     }
 
+    @Get('/user-decisions')
+    async decisions(
+        @Req() request: Request
+    ){
+        const user_id = await this.authService.userId(request);
+        return this.quoteService.getDecisions(user_id);
+    }
+
     @UseGuards(AuthGuard)
     @Post()
     async create(
@@ -49,14 +58,14 @@ export class QuoteController {
     }
 
     @UseGuards(AuthGuard)
-    @Put(':id')
+    @Put('/:id')
     async update(
-        @Param('id') id: number, 
+        @Param('id') id: any, 
         @Body() body: QuoteUpdateDto)
     {
         return await this.quoteService.create({
-            quote_id: id,
-            quote: body.quote
+            quote_id: parseInt(id),
+            quote: body.quote,
         });
     }
 
