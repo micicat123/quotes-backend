@@ -1,5 +1,4 @@
 import { User } from "src/user/models/user.entity"
-import { Vote } from "src/vote/models/vote.entity";
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm"
 
 @Entity('Quotes')

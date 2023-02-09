@@ -6,7 +6,6 @@ import { QuoteService } from './quote.service';
 import { Request } from 'express';
 import { QuoteUpdateDto } from './models/quote-update.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { type } from 'os';
 
 @Controller('quote')
 export class QuoteController {

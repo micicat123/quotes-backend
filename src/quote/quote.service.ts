@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { use } from 'passport';
-import { skip } from 'rxjs';
 import { CommonService } from 'src/common/common.service';
-import { User } from 'src/user/models/user.entity';
 import { Vote } from 'src/vote/models/vote.entity';
 import { Not, Repository } from 'typeorm';
 import { Quote } from './models/quote.entity';
