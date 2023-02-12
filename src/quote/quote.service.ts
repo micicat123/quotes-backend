@@ -63,4 +63,23 @@ export class QuoteService extends CommonService{
             relations: ['quote']
         });
     }
+
+    async deleteQuote(quote_id: number): Promise<any> {
+        const vote_ids = await this.voteRepository.find({
+            select: {
+                vote_id: true
+            },
+            where: {
+                quote:{
+                    quote_id: quote_id
+                },
+            },
+        });
+
+        for (const vote_id of vote_ids){
+            await this.voteRepository.delete(vote_id);
+        }
+
+        return await this.quoteRepository.delete(quote_id);
+    }
 }

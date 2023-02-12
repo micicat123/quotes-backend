@@ -70,8 +70,8 @@ export class QuoteController {
 
     @UseGuards(AuthGuard)
     @Delete(':id')
-    async delete(@Param('id') id: number){
-        return this.quoteService.delete(id);
+    async delete(@Param('id') quote_id: number){
+        return this.quoteService.deleteQuote(quote_id);
     }
     
 }

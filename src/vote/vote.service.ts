@@ -11,4 +11,10 @@ export class VoteService extends CommonService{
     ){
         super(voteRepository);
     }
+
+    async all(): Promise<any>{
+        return  await this.voteRepository.find({
+            relations: ['user', 'quote']
+        });
+    }
 }
