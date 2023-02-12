@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Put, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Put, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { QuoteService } from 'src/quote/quote.service';
 import { VoteService } from './vote.service';
@@ -30,7 +30,7 @@ export class VoteController {
 
     @Put('/upvote/:id')
     async upvote( 
-        @Param('id') quote_id: number,
+        @Param('id') quote_id: any,
         @Req() request: Request
 
     ){
@@ -42,24 +42,24 @@ export class VoteController {
         for (const vote of votes) {
 
             //user upvoted a quote before
-            if (vote.user_id == user_id && vote.quote_id == quote_id && vote.decision == 2) {
+            if (vote.user.user_id == user_id && vote.quote.quote_id == quote_id && vote.decision == 2) {
                 this.updateQuoteToNeutral(vote);
                 return await this.quoteService.create({
-                    quote_id,
+                    quote_id: parseInt(quote_id),
                     upvotes: quote.upvotes - 1,
                     score: (quote.upvotes - 1) - quote.downvotes
                 });
             }
 
             //user downvoted a quote before
-            else if (vote.user_id == user_id && vote.quote_id == quote_id && vote.decision == 0) {
+            else if (vote.user.user_id == user_id && vote.quote.quote_id == quote_id && vote.decision == 0) {
                 await this.voteService.create({
                     vote_id: vote.vote_id, 
                     decision: 2
                 });
 
                 return await this.quoteService.create({
-                    quote_id,
+                    quote_id: parseInt(quote_id),
                     upvotes: quote.upvotes + 1,
                     downvotes: quote.downvotes - 1,
                     score: (quote.upvotes + 1) - (quote.downvotes - 1)
@@ -67,14 +67,14 @@ export class VoteController {
             }
 
             //user didnt didnt downvote quote but has interacted with it
-            else if (vote.user_id == user_id && vote.quote_id == quote_id && vote.decision == 1){
+            else if (vote.user.user_id == user_id && vote.quote.quote_id == quote_id && vote.decision == 1){
                 await this.voteService.create({
                     vote_id: vote.vote_id,
                     decision: 2
                 });
 
                 return await this.quoteService.create({
-                    quote_id,
+                    quote_id: parseInt(quote_id),
                     upvotes: quote.upvotes + 1,
                     score: (quote.upvotes + 1) - (quote.downvotes)
                 });
@@ -83,10 +83,11 @@ export class VoteController {
 
         //user hasnt interacted with quote yet
         await this.quoteService.create({
-            quote_id,
+            quote_id: parseInt(quote_id),
             upvotes: quote.upvotes + 1,
             score: (quote.upvotes + 1) - quote.downvotes
         });
+        
         return this.voteService.create({
             decision: 2,
             user: user_id,
@@ -96,7 +97,7 @@ export class VoteController {
 
     @Put('/downvote/:id')
     async downvote( 
-        @Param('id') quote_id: number,
+        @Param('id') quote_id: any,
         @Req() request: Request
 
     ){
@@ -107,26 +108,26 @@ export class VoteController {
         const votes = await this.voteService.all();
         for (const vote of votes) {
 
-            //user downvotes a quote before
-            if (vote.user_id == user_id && vote.quote_id == quote_id && vote.decision == 0) {
+            //user downvoted a quote before
+            if (vote.user.user_id == user_id && vote.quote.quote_id == quote_id && vote.decision == 0) {
                 this.updateQuoteToNeutral(vote);
 
                 return await this.quoteService.create({
-                    quote_id,
+                    quote_id: parseInt(quote_id),
                     downvotes: quote.downvotes - 1,
                     score: quote.upvotes - (quote.downvotes - 1)
                 });
             }
 
             //user upvoted a quote before
-            if (vote.user_id == user_id && vote.quote_id == quote_id && vote.decision == 2) {
+            if (vote.user.user_id == user_id && vote.quote.quote_id == quote_id && vote.decision == 2) {
                 await this.voteService.create({
                     vote_id: vote.vote_id,    
                     decision: 0
                 });
 
                 return await this.quoteService.create({
-                    quote_id,
+                    quote_id: parseInt(quote_id),
                     upvotes: quote.upvotes - 1,
                     downvotes: quote.downvotes + 1,
                     score: (quote.upvotes - 1) - (quote.downvotes + 1)
@@ -134,14 +135,14 @@ export class VoteController {
             }
 
             //user didnt didnt upvote quote but has interacted with it
-            else if (vote.user_id == user_id && vote.quote_id == quote_id && vote.decision == 1){
+            else if (vote.user.user_id == user_id && vote.quote.quote_id == quote_id && vote.decision == 1){
                 await this.voteService.create({
                     vote_id: vote.vote_id,
                     decision: 0
                 });
 
                 return await this.quoteService.create({
-                    quote_id,
+                    quote_id: parseInt(quote_id),
                     upvotes: quote.downvotes + 1,
                     score: (quote.upvotes) - (quote.downvotes + 1)
                 });
@@ -150,12 +151,12 @@ export class VoteController {
 
         //user hasnt interacted with quote yet
         await this.quoteService.create({
-            quote_id,
+            quote_id: parseInt(quote_id),
             downvotes: quote.downvotes + 1,
             score: quote.upvotes - (quote.downvotes + 1)
         });
 
-        return this.quoteService.create({
+        return this.voteService.create({
             decision: 0,
             user: user_id,
             quote: quote_id
