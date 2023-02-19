@@ -21,6 +21,8 @@ export class UserController {
     async create(@Body() body: UserCreateDto): Promise<User>{
         
         if (body.password !== body.password_confirm) throw new BadRequestException("Passwords do not match!");
+        const user = await this.userService.findBy({email: body.email});
+        if (user) throw new BadRequestException("This email is already in use!");
 
         const hashed_password = await bcrypt.hash(body.password, 12);
         const {first_name, last_name, email, ...data} = body;
@@ -62,6 +64,7 @@ export class UserController {
         @Req() request: Request
     ){
         const id = await this.authService.userId(request);
+
         return await this.userService.create({
             user_id: id,
             email: body.email,
