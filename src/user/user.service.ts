@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CommonService } from 'src/common/common.service';
 import { Quote } from 'src/quote/models/quote.entity';
 import { Vote } from 'src/vote/models/vote.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { User } from './models/user.entity';
 
 @Injectable()
@@ -56,23 +56,24 @@ export class UserService extends CommonService {
     }
 
     async getQuotesLikedByUser(id:number, page:number): Promise<any>{
+
+        const ids = await this.voteRepository.query(`SELECT q.quote_id FROM "Users" u INNER JOIN "Votes" v USING(user_id) INNER JOIN "Quotes" q USING(quote_id) WHERE u.user_id = ${id} AND decision = 2;`);
+
+        const idValues = ids.map(obj => obj.quote_id);
+
         const take = 4;
-        const [data, total] =  await this.voteRepository.findAndCount({
+        const [data, total] =  await this.quoteRepository.findAndCount({
             where: {
-                user:{
-                    user_id: id
-                },
-                decision: 2
+                quote_id: In(idValues)
             },
             order: {
-                quote: {
-                    upvotes: "DESC"
-                }
+                upvotes: "DESC"
             },
             take,
             skip: take * (page - 1),
-            relations: ['user', 'quote']
+            relations: ['user']
         });
+
         return data;
     }
 
