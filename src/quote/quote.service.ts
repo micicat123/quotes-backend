@@ -41,7 +41,7 @@ export class QuoteService extends CommonService{
     }
 
     async randomQuote(): Promise<any>{
-        const quotes = await this.voteRepository.find({relations: ['user', 'quote']});
+        const quotes = await this.quoteRepository.find({relations: ['user']});
     
         return quotes[Math.floor(Math.random() * quotes.length)];
     }
