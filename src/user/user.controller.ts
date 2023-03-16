@@ -73,41 +73,35 @@ export class UserController {
         });
     }
 
-    @UseGuards(AuthGuard)
-    @Get('/statistics')
-    async getUserStatistics( @Req() request: Request): Promise<User>{
+    @Get('/statistics/:id')
+    async getUserStatistics( 
+        @Param('id') id: number
+    ): Promise<User>{
 
-        const user_id = await this.authService.userId(request);
-        return this.userService.getUserStatistics(user_id); 
+        return this.userService.getUserStatistics(id); 
     }
 
-    @UseGuards(AuthGuard)
-    @Get('/quotes/:page')
+    @Get('/quotes/:page/:id')
     async getUserQuotes(
         @Param('page') page: number,
-        @Req() request: Request
+        @Param('id') id: number,
     ): Promise<User>{
-        const user_id = await this.authService.userId(request);
-        return this.userService.getUsersQuotes(user_id, page); 
+        return this.userService.getUsersQuotes(id, page); 
     }
 
-    @UseGuards(AuthGuard)
-    @Get('/quotes-liked/:page')
+    @Get('/quotes-liked/:page/:id')
     async getUserLikedQuotes(
         @Param('page') page: number,
-        @Req() request: Request
+        @Param('id') id: number,
     ): Promise<User>{
-        const user_id = await this.authService.userId(request);
-        return this.userService.getQuotesLikedByUser(user_id, page); 
+        return this.userService.getQuotesLikedByUser(id, page); 
     }
 
-    @UseGuards(AuthGuard)
-    @Get('/most-liked-quotes/:page')
+    @Get('/most-liked-quotes/:page/:id')
     async getUsersMostLikedQuotes(
         @Param('page') page: number,
-        @Req() request: Request
+        @Param('id') id: number,
     ): Promise<User>{
-        const user_id = await this.authService.userId(request);
-        return this.userService.getUsersMostLikedQuotes(user_id, page); 
+        return this.userService.getUsersMostLikedQuotes(id, page); 
     }
 }
