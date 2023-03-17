@@ -24,7 +24,9 @@ export class QuoteService extends CommonService{
             skip: take * (page - 1),
             relations: ['user']
         });
-        return data;
+        const totalPages = Math.ceil(total / take);
+        const isLastPage = page == totalPages;
+        return {data, isLastPage};
     }
 
     async paginateUpvoted(page:number): Promise<any>{
@@ -37,7 +39,9 @@ export class QuoteService extends CommonService{
             skip: take * (page - 1),
             relations: ['user']
         });
-        return data;
+        const totalPages = Math.ceil(total / take);
+        const isLastPage = page == totalPages;
+        return {data, isLastPage};
     }
 
     async randomQuote(): Promise<any>{
