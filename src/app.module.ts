@@ -8,6 +8,12 @@ import { VoteModule } from './vote/vote.module';
 import { CommonModule } from './common/common.module';
 import { config } from 'dotenv';
 import { AuthModule } from './auth/auth.module';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { UploadsController } from './uploads/uploads.controller';
+import { UploadsModule } from './uploads/uploads.module';
+import { AuthService } from './auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -19,9 +25,14 @@ import { AuthModule } from './auth/auth.module';
             QuoteModule,
             VoteModule,
             CommonModule,
-            AuthModule
+            AuthModule,
+            ServeStaticModule.forRoot({
+              rootPath: join(__dirname, '..', 'uploads'),
+              serveRoot: '/images',
+            }),
+            UploadsModule,
            ],
-  controllers: [],
-  providers: [],
+  controllers: [UploadsController],
+  providers: [AuthService, JwtService],
 })
 export class AppModule {}
