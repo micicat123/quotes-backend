@@ -1,11 +1,12 @@
-import { BadRequestException, Controller, Get, Param, Post, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Param, Post, Put, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthService } from 'src/auth/auth.service';
 import { UserService } from 'src/user/user.service';
 import { multerOptions } from './multer-options';
 import { extname, join } from 'path';
-import { createReadStream } from 'fs';
+import { createReadStream, unlink } from 'fs';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('uploads')
 export class UploadsController {
@@ -21,9 +22,15 @@ export class UploadsController {
         @UploadedFile() file: Express.Multer.File,
         @Param('email') email: number, 
     ) {
-
         if(file){
             const user = await this.userService.findBy({email: email});
+            if(user.picture != ''){
+              unlink(`./uploads/${user.picture}`, (err) => {
+                if (err) {
+                  console.error(err);
+                }
+              });
+            }
             return await this.userService.create({
                 user_id: parseInt(user.user_id), 
                 picture: file.filename
@@ -37,15 +44,15 @@ export class UploadsController {
         @Param('id') id: number, 
         @Res() res: Response
     ) {
-        const user = await this.userService.findBy({user_id: id});
-  
-      if (!user || !user.picture) {
-        throw new BadRequestException("Profile picture not found");
-      }
+      const user = await this.userService.findBy({user_id: id});
   
       const contentType = getContentType(user.picture);
       res.set('Content-Type', contentType);
-      const stream = createReadStream(`./uploads/${user.picture}`);
+
+      let stream = createReadStream(`./uploads/unset-profile-picture.png`);
+      if(user.picture != ''){
+        stream = createReadStream(`./uploads/${user.picture}`);
+      }
       stream.pipe(res);
     }
   }
