@@ -82,16 +82,16 @@ export class VoteController {
         }
 
         //user hasnt interacted with quote yet
-        await this.quoteService.create({
-            quote_id: parseInt(quote_id),
-            upvotes: quote.upvotes + 1,
-            score: (quote.upvotes + 1) - quote.downvotes
-        });
-        
-        return this.voteService.create({
+        await this.voteService.create({
             decision: 2,
             user: user_id,
             quote: quote_id
+        });
+
+        return await this.quoteService.create({
+            quote_id: parseInt(quote_id),
+            upvotes: quote.upvotes + 1,
+            score: (quote.upvotes + 1) - quote.downvotes
         });
     }
 
@@ -115,6 +115,7 @@ export class VoteController {
                 return await this.quoteService.create({
                     quote_id: parseInt(quote_id),
                     downvotes: quote.downvotes - 1,
+                    upvotes: quote.upvotes,
                     score: quote.upvotes - (quote.downvotes - 1)
                 });
             }
@@ -143,23 +144,25 @@ export class VoteController {
 
                 return await this.quoteService.create({
                     quote_id: parseInt(quote_id),
-                    upvotes: quote.downvotes + 1,
+                    upvotes: quote.upvotes,
+                    downvotes: quote.downvotes + 1,
                     score: (quote.upvotes) - (quote.downvotes + 1)
                 });
             }
         }
 
         //user hasnt interacted with quote yet
-        await this.quoteService.create({
-            quote_id: parseInt(quote_id),
-            downvotes: quote.downvotes + 1,
-            score: quote.upvotes - (quote.downvotes + 1)
-        });
-
-        return this.voteService.create({
+        await this.voteService.create({
             decision: 0,
             user: user_id,
             quote: quote_id
+        });
+
+        return await this.quoteService.create({
+            quote_id: parseInt(quote_id),
+            upvotes: quote.upvotes,
+            downvotes: quote.downvotes + 1,
+            score: quote.upvotes - (quote.downvotes + 1)
         });
     }
 }
