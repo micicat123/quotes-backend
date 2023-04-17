@@ -1,11 +1,13 @@
 import { BadRequestException, Body, Controller, Get, NotFoundException, Post, Req, Res, UseGuards} from '@nestjs/common';
 import { Response, Request } from 'express';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
-const bcrypt = require('bcryptjs');
-require('dotenv').config();
+import * as bcrypt from 'bcryptjs';
+
+import { config } from 'dotenv';
+config();
 
 @Controller('auth')
 export class AuthController {

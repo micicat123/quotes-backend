@@ -1,12 +1,11 @@
-import { BadRequestException, Controller, Get, Param, Post, Put, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Controller, Get, Param, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AuthService } from 'src/auth/auth.service';
-import { UserService } from 'src/user/user.service';
+import { AuthService } from '../auth/auth.service';
+import { UserService } from '../user/user.service';
 import { multerOptions } from './multer-options';
-import { extname, join } from 'path';
+import { extname } from 'path';
 import { createReadStream, unlink } from 'fs';
-import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('uploads')
 export class UploadsController {
@@ -36,7 +35,6 @@ export class UploadsController {
                 picture: file.filename
              });
         }
-        return file.filename;
     }
 
     @Get('picture/:id')

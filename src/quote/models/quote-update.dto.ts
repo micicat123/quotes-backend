@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsEmail, Validate } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class QuoteUpdateDto{
 

@@ -1,11 +1,11 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
-import { AuthService } from 'src/auth/auth.service';
+import { BadRequestException, Body, Controller, Get, Param, Post, Put, Req, UseGuards, Delete } from '@nestjs/common';
+import { AuthService } from '../auth/auth.service';
 import { QuoteCreateDto } from './models/quote-create.dto';
 import { Quote } from './models/quote.entity';
 import { QuoteService } from './quote.service';
 import { Request } from 'express';
 import { QuoteUpdateDto } from './models/quote-update.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('quote')
 export class QuoteController {
@@ -66,6 +66,12 @@ export class QuoteController {
             quote_id: parseInt(id),
             quote: body.quote,
         });
+    }
+
+    @UseGuards(AuthGuard)
+    @Delete('/:id')
+    async deleteQuote(@Param('id') id: number): Promise<Quote>{
+        return this.quoteService.deleteQuote(id); 
     }
     
 }

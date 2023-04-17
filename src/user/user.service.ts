@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CommonService } from 'src/common/common.service';
-import { Quote } from 'src/quote/models/quote.entity';
-import { Vote } from 'src/vote/models/vote.entity';
+import { CommonService } from '../common/common.service';
+import { Quote } from '../quote/models/quote.entity';
+import { Vote } from '../vote/models/vote.entity';
 import { In, Repository } from 'typeorm';
 import { User } from './models/user.entity';
 

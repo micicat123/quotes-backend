@@ -1,9 +1,9 @@
 import { Controller, Get, Param, ParseIntPipe, Put, Req, UseGuards } from '@nestjs/common';
-import { AuthService } from 'src/auth/auth.service';
-import { QuoteService } from 'src/quote/quote.service';
+import { AuthService } from '../auth/auth.service';
+import { QuoteService } from '../quote/quote.service';
 import { VoteService } from './vote.service';
 import { Request } from 'express';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 
 @UseGuards(AuthGuard)
 @Controller('vote')

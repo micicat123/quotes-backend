@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthService } from 'src/auth/auth.service';
-import { Vote } from 'src/vote/models/vote.entity';
+import { AuthService } from '../auth/auth.service';
+import { Vote } from '../vote/models/vote.entity';
 import { Quote } from './models/quote.entity';
 import { QuoteController } from './quote.controller';
 import { QuoteService } from './quote.service';

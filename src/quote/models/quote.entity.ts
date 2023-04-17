@@ -1,5 +1,5 @@
-import { User } from "src/user/models/user.entity"
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm"
+import { User } from "../../user/models/user.entity"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm"
 
 @Entity('Quotes')
 export class Quote {
