@@ -8,15 +8,15 @@ config();
 @UseGuards(AuthGuard)
 @Injectable()
 export class AuthService {
-    
-    constructor(private jwtService: JwtService){
-    }
+  constructor(private jwtService: JwtService) {}
 
-    async userId(request : Request): Promise<number>{
-        const cookie = request.cookies['jwt'];
+  async userId(request: Request): Promise<number> {
+    const cookie = request.cookies['jwt'];
 
-        const data = await this.jwtService.verify(cookie, {secret: process.env.JWT_SECRET});
+    const data = await this.jwtService.verify(cookie, {
+      secret: process.env.JWT_SECRET,
+    });
 
-        return data['user_id'];
-    }
+    return data['user_id'];
+  }
 }
